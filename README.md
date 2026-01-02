@@ -183,26 +183,6 @@ Toggle dark mode using the button in the navigation bar. Your preference is auto
 - Cart state persists in localStorage
 - Authentication tokens stored in localStorage
 
-## 🐛 Troubleshooting
-
-### MongoDB Connection Issues
-- Ensure MongoDB is running: `mongod` (or check MongoDB Atlas connection)
-- Verify MONGODB_URI in `.env.local`
-
-### Build Errors
-- Clear `.next` folder and rebuild: `rm -rf .next && npm run build`
-- Check TypeScript errors: `npm run lint`
-
-### Port Already in Use
-- Change port: `PORT=3001 npm run dev`
-
-## 📦 Production Build
-
-```bash
-npm run build
-npm start
-```
-
 ## 🤝 Contributing
 
 This is a clone project for educational purposes. Feel free to fork and customize for your needs.
