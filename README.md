@@ -1,4 +1,4 @@
-# McDonald's Clone - Full-Stack Web Application
+# 🍔 McDonald's Clone - Full-Stack Web Application
 
 A production-quality full-stack web application clone of McDonald's customer-facing website with online food ordering capabilities.
 
@@ -44,53 +44,6 @@ A production-quality full-stack web application clone of McDonald's customer-fac
 - **Animations**: Framer Motion
 - **Icons**: Emoji-based (can be replaced with icon library)
 
-## 📋 Prerequisites
-
-- Node.js 18+ installed
-- MongoDB installed and running (or MongoDB Atlas connection string)
-- npm or yarn package manager
-
-## 🔧 Installation & Setup
-
-1. **Clone the repository**
-   ```bash
-   cd McD
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Set up environment variables**
-   
-   Create a `.env.local` file in the root directory:
-   ```env
-   MONGODB_URI=mongodb://localhost:27017/mcdonalds-clone
-   JWT_SECRET=your-secret-key-change-in-production
-   NEXT_PUBLIC_API_URL=
-   ```
-
-   For MongoDB Atlas:
-   ```env
-   MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/mcdonalds-clone
-   ```
-
-4. **Seed the database**
-   
-   Run the seed script to populate products, deals, and stores:
-   ```bash
-   npm run seed
-   ```
-
-5. **Start the development server**
-   ```bash
-   npm run dev
-   ```
-
-6. **Open the application**
-   
-   Navigate to [http://localhost:3000](http://localhost:3000) in your browser
 
 ## 📁 Project Structure
 
