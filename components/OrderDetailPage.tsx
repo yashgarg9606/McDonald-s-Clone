@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Layout from './Layout';
 import api from '@/lib/api';
@@ -38,15 +38,7 @@ export default function OrderDetailPage({ orderId }: { orderId: string }) {
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (!isAuthenticated()) {
-      router.push('/login');
-      return;
-    }
-    fetchOrder();
-  }, [orderId, isAuthenticated]);
-
-  const fetchOrder = async () => {
+  const fetchOrder = useCallback(async () => {
     try {
       const response = await api.get(`/orders/${orderId}`);
       setOrder(response.data.order);
@@ -56,7 +48,15 @@ export default function OrderDetailPage({ orderId }: { orderId: string }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [orderId, router]);
+
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      router.push('/login');
+      return;
+    }
+    fetchOrder();
+  }, [orderId, isAuthenticated, fetchOrder, router]);
 
   const getStatusColor = (status: string) => {
     const colors: Record<string, string> = {

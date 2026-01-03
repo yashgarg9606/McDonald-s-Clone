@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import Layout from './Layout';
 import api from '@/lib/api';
 import { motion } from 'framer-motion';
@@ -106,10 +107,13 @@ export default function HomePage() {
                   }}
                   className="relative z-10"
                 >
-                  <img
+                  <Image
                     src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&h=600&fit=crop"
                     alt="Delicious Burger"
+                    width={600}
+                    height={600}
                     className="w-full max-w-md md:max-w-lg lg:max-w-xl h-auto rounded-lg shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-300"
+                    priority
                   />
                 </motion.div>
                 {/* Decorative circles */}
@@ -179,12 +183,14 @@ export default function HomePage() {
                 >
                   <Link href={`/products/${product._id}`}>
                     <div className="bg-white dark:bg-gray-700 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow cursor-pointer">
-                      <div className="h-48 bg-gray-200 dark:bg-gray-600 flex items-center justify-center">
+                      <div className="h-48 bg-gray-200 dark:bg-gray-600 flex items-center justify-center relative overflow-hidden">
                         {product.image ? (
-                          <img
+                          <Image
                             src={product.image}
                             alt={product.name}
-                            className="w-full h-full object-cover"
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                           />
                         ) : (
                           <span className="text-6xl">

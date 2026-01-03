@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Layout from './Layout';
 import api from '@/lib/api';
 import { motion } from 'framer-motion';
@@ -34,11 +34,7 @@ export default function StoresPage() {
   const [searchCity, setSearchCity] = useState('');
   const [searchZip, setSearchZip] = useState('');
 
-  useEffect(() => {
-    fetchStores();
-  }, []);
-
-  const fetchStores = async () => {
+  const fetchStores = useCallback(async () => {
     try {
       const params: any = {};
       if (searchCity) params.city = searchCity;
@@ -51,7 +47,11 @@ export default function StoresPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [searchCity, searchZip]);
+
+  useEffect(() => {
+    fetchStores();
+  }, [fetchStores]);
 
   const handleSearch = () => {
     setLoading(true);

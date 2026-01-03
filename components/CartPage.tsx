@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import Layout from './Layout';
 import { useCartStore } from '@/store/cartStore';
 import { useAuthStore } from '@/store/authStore';
@@ -68,9 +69,15 @@ export default function CartPage() {
                 transition={{ delay: index * 0.1 }}
                 className="bg-white dark:bg-gray-700 rounded-lg shadow-lg p-4 flex gap-4"
               >
-                <div className="w-24 h-24 bg-gray-200 dark:bg-gray-600 rounded flex items-center justify-center flex-shrink-0">
+                <div className="w-24 h-24 bg-gray-200 dark:bg-gray-600 rounded flex items-center justify-center flex-shrink-0 relative overflow-hidden">
                   {item.image ? (
-                    <img src={item.image} alt={item.name} className="w-full h-full object-cover rounded" />
+                    <Image 
+                      src={item.image} 
+                      alt={item.name} 
+                      fill
+                      className="object-cover rounded"
+                      sizes="96px"
+                    />
                   ) : (
                     <span className="text-3xl">🍔</span>
                   )}

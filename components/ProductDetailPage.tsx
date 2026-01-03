@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import Layout from './Layout';
 import api from '@/lib/api';
 import { useCartStore } from '@/store/cartStore';
@@ -53,11 +54,7 @@ export default function ProductDetailPage({ productId }: { productId: string }) 
     }
   };
 
-  useEffect(() => {
-    fetchProduct();
-  }, [productId]);
-
-  const fetchProduct = async () => {
+  const fetchProduct = useCallback(async () => {
     try {
       const response = await api.get(`/products/${productId}`);
       setProduct(response.data.product);
@@ -68,7 +65,11 @@ export default function ProductDetailPage({ productId }: { productId: string }) 
     } finally {
       setLoading(false);
     }
-  };
+  }, [productId, router]);
+
+  useEffect(() => {
+    fetchProduct();
+  }, [fetchProduct]);
 
   const handleAddToCart = () => {
     if (!product) return;
@@ -132,12 +133,15 @@ export default function ProductDetailPage({ productId }: { productId: string }) 
         >
           {/* Product Image */}
           <div className="bg-white dark:bg-gray-700 rounded-lg shadow-lg overflow-hidden">
-            <div className="h-96 bg-gray-200 dark:bg-gray-600 flex items-center justify-center">
+            <div className="h-96 bg-gray-200 dark:bg-gray-600 flex items-center justify-center relative overflow-hidden">
               {product.image ? (
-                <img
+                <Image
                   src={product.image}
                   alt={product.name}
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  priority
                 />
               ) : (
                 <span className="text-9xl">🍔</span>

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import Layout from './Layout';
 import api from '@/lib/api';
 import { toast } from 'react-toastify';
@@ -117,15 +118,14 @@ export default function MenuPage() {
                     onClick={() => router.push(`/products/${product._id}`)}
                   >
                     {product.image ? (
-                      <img
+                      <Image
                         src={product.image}
                         alt={product.name}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.style.display = 'none';
-                          const fallback = target.nextElementSibling as HTMLElement;
-                          if (fallback) fallback.style.display = 'flex';
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        onError={() => {
+                          // Image error handled by Next.js Image component
                         }}
                       />
                     ) : null}
