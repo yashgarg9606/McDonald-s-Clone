@@ -195,102 +195,102 @@ Respond naturally and helpfully.`;
 // Fallback function for simple keyword matching (when Groq is not available)
 async function handleSimpleResponse(req: AuthRequest, message: string) {
   await connectDB();
-  
-  const msg = message.toLowerCase();
-  let response: any = {
-    text: '',
-    products: [],
-    suggestions: [],
-  };
+
+      const msg = message.toLowerCase();
+      let response: any = {
+        text: '',
+        products: [],
+        suggestions: [],
+      };
 
   // Simple keyword matching logic (original implementation)
-  if (msg.includes('budget') || msg.includes('price') || msg.includes('under') || msg.includes('₹')) {
-    const budgetMatch = msg.match(/₹?\s*(\d+)/);
-    const budget = budgetMatch ? parseInt(budgetMatch[1]) : null;
+      if (msg.includes('budget') || msg.includes('price') || msg.includes('under') || msg.includes('₹')) {
+        const budgetMatch = msg.match(/₹?\s*(\d+)/);
+        const budget = budgetMatch ? parseInt(budgetMatch[1]) : null;
 
-    if (budget) {
-      const products = await Product.find({
-        available: true,
-        price: { $lte: budget },
-      }).limit(5);
+        if (budget) {
+          const products = await Product.find({
+            available: true,
+            price: { $lte: budget },
+          }).limit(5);
 
-      response.text = `Here are some great options under ₹${budget}:`;
-      response.products = products;
-    } else {
-      response.text = 'Could you please specify your budget? For example, "under ₹200"';
-    }
-  } else if (msg.includes('spicy')) {
-    const products = await Product.find({
-      available: true,
-      $or: [
-        { name: { $regex: 'spicy', $options: 'i' } },
-        { description: { $regex: 'spicy', $options: 'i' } },
-      ],
-    }).limit(5);
+          response.text = `Here are some great options under ₹${budget}:`;
+          response.products = products;
+        } else {
+          response.text = 'Could you please specify your budget? For example, "under ₹200"';
+        }
+      } else if (msg.includes('spicy')) {
+        const products = await Product.find({
+          available: true,
+          $or: [
+            { name: { $regex: 'spicy', $options: 'i' } },
+            { description: { $regex: 'spicy', $options: 'i' } },
+          ],
+        }).limit(5);
 
-    response.text = 'Here are some spicy options for you:';
-    response.products = products;
-  } else if (msg.includes('vegetarian') || msg.includes('veg')) {
-    const products = await Product.find({
-      available: true,
-      name: {
-        $not: {
-          $regex: '(chicken|beef|meat|pork)',
-          $options: 'i',
-        },
-      },
-    }).limit(5);
+        response.text = 'Here are some spicy options for you:';
+        response.products = products;
+      } else if (msg.includes('vegetarian') || msg.includes('veg')) {
+        const products = await Product.find({
+          available: true,
+          name: {
+            $not: {
+              $regex: '(chicken|beef|meat|pork)',
+              $options: 'i',
+            },
+          },
+        }).limit(5);
 
-    response.text = 'Here are some vegetarian options:';
-    response.products = products;
-  } else if (msg.includes('healthy') || msg.includes('nutrition') || msg.includes('low calorie')) {
-    const products = await Product.find({ available: true })
-      .sort({ 'nutrition.calories': 1 })
-      .limit(5);
+        response.text = 'Here are some vegetarian options:';
+        response.products = products;
+      } else if (msg.includes('healthy') || msg.includes('nutrition') || msg.includes('low calorie')) {
+        const products = await Product.find({ available: true })
+          .sort({ 'nutrition.calories': 1 })
+          .limit(5);
 
-    response.text = 'Here are some healthier options with lower calories:';
-    response.products = products;
-  } else if (msg.includes('burger')) {
-    const products = await Product.find({
-      available: true,
-      category: 'burgers',
-    }).limit(5);
+        response.text = 'Here are some healthier options with lower calories:';
+        response.products = products;
+      } else if (msg.includes('burger')) {
+        const products = await Product.find({
+          available: true,
+          category: 'burgers',
+        }).limit(5);
 
-    response.text = 'Here are our burger options:';
-    response.products = products;
-  } else if (msg.includes('drink') || msg.includes('beverage')) {
-    const products = await Product.find({
-      available: true,
-      category: 'beverages',
-    }).limit(5);
+        response.text = 'Here are our burger options:';
+        response.products = products;
+      } else if (msg.includes('drink') || msg.includes('beverage')) {
+        const products = await Product.find({
+          available: true,
+          category: 'beverages',
+        }).limit(5);
 
-    response.text = 'Here are our beverage options:';
-    response.products = products;
-  } else if (msg.includes('order history') || msg.includes('previous orders')) {
-    if (req.user) {
-      const orders = await Order.find({ user: req.user.id })
-        .sort({ createdAt: -1 })
-        .limit(5);
+        response.text = 'Here are our beverage options:';
+        response.products = products;
+      } else if (msg.includes('order history') || msg.includes('previous orders')) {
+        if (req.user) {
+          const orders = await Order.find({ user: req.user.id })
+            .sort({ createdAt: -1 })
+            .limit(5);
 
-      response.text = `You have ${orders.length} recent orders. Would you like to reorder any?`;
-      response.suggestions = orders.map((order) => ({
-        type: 'reorder',
-        orderId: order._id,
-        items: order.items,
-      }));
-    } else {
-      response.text = 'Please login to view your order history.';
-    }
-  } else {
-    const products = await Product.find({ available: true }).limit(5);
-    response.text = 'Here are some popular items. You can ask me to suggest items by budget, preferences (spicy, vegetarian, healthy), or browse by category (burgers, beverages, etc.)';
-    response.products = products;
-    response.suggestions = [
-      { type: 'suggestion', text: 'Show me items under ₹200' },
-      { type: 'suggestion', text: 'I want something spicy' },
-      { type: 'suggestion', text: 'Show vegetarian options' },
-    ];
-  }
+          response.text = `You have ${orders.length} recent orders. Would you like to reorder any?`;
+          response.suggestions = orders.map((order) => ({
+            type: 'reorder',
+            orderId: order._id,
+            items: order.items,
+          }));
+        } else {
+          response.text = 'Please login to view your order history.';
+        }
+      } else {
+        const products = await Product.find({ available: true }).limit(5);
+        response.text = 'Here are some popular items. You can ask me to suggest items by budget, preferences (spicy, vegetarian, healthy), or browse by category (burgers, beverages, etc.)';
+        response.products = products;
+        response.suggestions = [
+          { type: 'suggestion', text: 'Show me items under ₹200' },
+          { type: 'suggestion', text: 'I want something spicy' },
+          { type: 'suggestion', text: 'Show vegetarian options' },
+        ];
+      }
 
   return response;
 }

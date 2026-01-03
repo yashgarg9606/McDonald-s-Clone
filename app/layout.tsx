@@ -13,6 +13,18 @@ const fredoka = Fredoka({
 export const metadata: Metadata = {
   title: "McDonald's Clone - Order Food Online",
   description: "Order your favorite McDonald's meals online",
+  openGraph: {
+    title: "McDonald's Clone - Order Food Online",
+    description: "Order your favorite McDonald's meals online",
+    type: 'website',
+    // Next.js will automatically use app/opengraph-image.png if it exists
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "McDonald's Clone - Order Food Online",
+    description: "Order your favorite McDonald's meals online",
+    // Next.js will automatically use app/twitter-image.png if it exists
+  },
 };
 
 export default function RootLayout({
