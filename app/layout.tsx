@@ -13,17 +13,35 @@ const fredoka = Fredoka({
 export const metadata: Metadata = {
   title: "McDonald's Clone - Order Food Online",
   description: "Order your favorite McDonald's meals online",
+  icons: {
+    icon: [
+      { url: '/icon.png', type: 'image/png', sizes: 'any' },
+      { url: '/icon.png', type: 'image/png', sizes: '32x32' },
+      { url: '/icon.png', type: 'image/png', sizes: '16x16' },
+    ],
+    apple: [
+      { url: '/apple-icon.png', type: 'image/png', sizes: '180x180' },
+    ],
+    shortcut: '/icon.png',
+  },
   openGraph: {
     title: "McDonald's Clone - Order Food Online",
     description: "Order your favorite McDonald's meals online",
     type: 'website',
-    // Next.js will automatically use app/opengraph-image.png if it exists
+    images: [
+      {
+        url: '/opengraph-image.png',
+        width: 1200,
+        height: 630,
+        alt: "McDonald's Clone",
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: "McDonald's Clone - Order Food Online",
     description: "Order your favorite McDonald's meals online",
-    // Next.js will automatically use app/twitter-image.png if it exists
+    images: ['/opengraph-image.png'],
   },
 };
 
